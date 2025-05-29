@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Matches</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgb(248, 248, 248);
+            background-image:url("https://img.freepik.com/free-photo/soccer-into-goal-success-concept_1150-5276.jpg?ga=GA1.1.1210816387.1748500867&semt=ais_hybrid&w=740");
+            height:100vh;
+            width:100vw;
+            background-size:cover;
+        }
+        .match-card {
+            background: rgb(207, 211, 222);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color:rgb(9, 9, 9) ;
+        }
+        .teams {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .vs {
+            margin: 0 10px;
+            color:rgb(11, 11, 11);
+        }
+        .date {
+            color:rgb(5, 5, 5);
+            font-weight: bold;
+        }
+        .competition {
+            color:rgb(5, 4, 4);
+            font-style: italic;
+        }
+        .loading, .error {
+            text-align: center;
+            padding: 20px;
+        }
+        h1{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upcoming Football Matches</h1>
+    <div id="matches">
+        <div class="loading">Loading matches...</div>
+    </div>
+
+    <script>
+        async function loadMatches() {
+            const container = document.getElementById('matches');
+            
+            try {
+                const response = await fetch('http://localhost:5501/api/matches');
+                const data = await response.json();
+                
+                if (!response.ok) throw data;
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="error">No upcoming matches found</div>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                data.forEach(match => {
+                    const date = new Date(match.date).toLocaleString();
+                    const card = document.createElement('div');
+                    card.className = 'match-card';
+                    card.innerHTML = `
+                        <div class="date">${date}</div>
+                        <div class="competition">${match.competition}</div>
+                        <div class="teams">
+                            <span>${match.homeTeam}</span>
+                            <span class="vs">vs</span>
+                            <span>${match.awayTeam}</span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = `
+                    <div class="error">
+                        <p>Failed to load matches</p>
+                        <p>${error.error || 'Unknown error'}</p>
+                        ${error.details ? `<pre>${JSON.stringify(error.details, null, 2)}</pre>` : ''}
+                    </div>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadMatches);
+    </script>
+</body>
+</html>
