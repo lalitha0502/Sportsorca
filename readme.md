@@ -1,4 +1,4 @@
-# ⚽ Upcoming Football Matches Viewer (Single-File Node.js App)
+ ⚽ Upcoming Football Matches Viewer (Single-File Node.js App)
 
 This project fetches and displays upcoming football matches from [Football-Data.org](https://www.football-data.org/). It uses:
 
@@ -6,14 +6,14 @@ This project fetches and displays upcoming football matches from [Football-Data.
 - An embedded **HTML frontend** served from the diff port
 - Data is fetched live and filtered to show only **future matches**
 
-## 🗂️ Project Structure
+ 🗂️ Project Structure
 
 For installing dependencies: npm install express axios cors
 Run: node server.js
 const API_KEY = 'your_api_key_here';
 
-# API key is provided in the code
+ API key is provided in the code
 
-# Befor running index.html file make sure to run this command
+ Befor running index.html file make sure to run this command
 
 Run : python3 -m http.server 5500
